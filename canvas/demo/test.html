@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>canvas-demo</title>
+    <style>
+      #canvasTest1 {
+        background: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvasTest1"></canvas>
+    <script>
+      var canvas = document.getElementById('canvasTest1')
+      var context = canvas.getContext('2d')
+      canvas.width = 400
+      canvas.height = 400
+      context.fillStyle = 'white'
+      context.rotate((20 * Math.PI) / 180)
+      context.fillRect(70, 30, 200, 100)
+    </script>
+  </body>
+</html>
