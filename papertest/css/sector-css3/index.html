@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+        text-align: center;
+      }
+      section {
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>css3 画一个扇形</h1>
+    <section>
+      <style>
+        .square {
+          width: 0;
+          height: 0;
+          border-width: 100px;
+          border-style: solid;
+          border-color: red blue green yellow;
+          margin: 30px auto;
+        }
+      </style>
+      <div class="square"></div>
+    </section>
+    <section>
+      <style>
+        .triangle {
+          width: 0;
+          height: 0;
+          border-width: 100px;
+          border-style: solid;
+          border-color: red transparent transparent transparent;
+          margin: 30px auto;
+        }
+      </style>
+      <div class="triangle"></div>
+    </section>
+    <section>
+      <style>
+        .circle {
+          width: 0;
+          height: 0;
+          border-radius: 100px;
+          border-width: 100px;
+          border-style: solid;
+          border-color: red blue green yellow;
+          margin: 30px auto;
+        }
+      </style>
+      <div class="circle"></div>
+    </section>
+    <section>
+      <style>
+        .fan {
+          width: 0;
+          height: 0;
+          border-radius: 100px;
+          border-width: 100px;
+          border-style: solid;
+          border-color: transparent transparent green transparent;
+          margin: 30px auto;
+        }
+      </style>
+      <div class="fan"></div>
+    </section>
+    <section>
+      <style>
+        .fan2 {
+          width: 0;
+          height: 0;
+          border-radius: 100px;
+          border-width: 100px;
+          border-style: solid;
+          border-color: transparent blue transparent transparent;
+          margin: 30px auto;
+          transform: rotate(120deg);
+        }
+      </style>
+      <div class="fan2"></div>
+    </section>
+    <section>
+      <style>
+        .pie {
+          position: relative;
+          margin: 30px auto;
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+          overflow: hidden;
+        }
+        .slice {
+          overflow: hidden;
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 50%;
+          height: 50%;
+          transform-origin: 0% 100%; /* 转换元素的位置。 */
+          transform: rotate(-210deg) skewY(-30deg); /* 定义沿着 Y 轴的 2D 倾斜转换。 */
+          background: black;
+        }
+      </style>
+      <div class="pie">
+        <div class="slice"></div>
+      </div>
+    </section>
+  </body>
+</html>
