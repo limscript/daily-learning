@@ -4,7 +4,7 @@
       v-model="isLoading"
       @refresh="onRefresh"
     >
-      <van-dropdown-menu>
+      <!-- <van-dropdown-menu>
         <van-dropdown-item
           v-model="value1"
           :options="options1"
@@ -13,7 +13,7 @@
           v-model="value2"
           :options="options2"
         ></van-dropdown-item>
-      </van-dropdown-menu>
+      </van-dropdown-menu> -->
       <van-cell
         v-for="item in list"
         :key="item"
