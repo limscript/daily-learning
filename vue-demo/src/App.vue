@@ -35,7 +35,7 @@
 <script>
 export default {
   name: 'App',
-  data () {
+  data() {
     return {
       active: 0
     }
@@ -48,5 +48,8 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  :focus {
+    outline: none;
+  }
 }
 </style>

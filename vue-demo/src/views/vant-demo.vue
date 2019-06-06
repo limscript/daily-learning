@@ -4,16 +4,30 @@
       v-model="isLoading"
       @refresh="onRefresh"
     >
-      <!-- <van-dropdown-menu>
+      <van-dropdown-menu>
         <van-dropdown-item
           v-model="value1"
           :options="options1"
-        ></van-dropdown-item>
+        />
         <van-dropdown-item
-          v-model="value2"
-          :options="options2"
-        ></van-dropdown-item>
-      </van-dropdown-menu> -->
+          ref="item"
+          title="筛选"
+        >
+          <van-switch-cell
+            v-model="switch1"
+            title="包邮"
+          />
+          <van-switch-cell
+            v-model="switch2"
+            title="团购"
+          />
+          <van-button
+            block
+            type="info"
+            @click="onConfirm"
+          >确认</van-button>
+        </van-dropdown-item>
+      </van-dropdown-menu>
       <van-cell
         v-for="item in list"
         :key="item"
@@ -25,14 +39,22 @@
 </template>
 
 <script>
+import vanDropdownMenu from '../components/van-dropdown-menu'
+import vanDropdownItem from '../components/van-dropdown-item'
 export default {
-  data () {
+  components: {
+    vanDropdownMenu,
+    vanDropdownItem
+  },
+  data() {
     return {
       list: [],
       isLoading: false,
       count: 0,
       value1: 0,
       value2: 'a',
+      switch1: false,
+      switch2: true,
       options1: [
         { text: '全部商品', value: 0 },
         { text: '新款商品', value: 1 },
@@ -46,13 +68,16 @@ export default {
     }
   },
   methods: {
-    onRefresh () {
+    onRefresh() {
       setTimeout(() => {
         this.$toast('刷新成功')
         this.list.push(this.count)
         this.isLoading = false
         this.count++
       }, 500)
+    },
+    onConfirm() {
+      this.$refs.item.toggle()
     }
   }
 }
