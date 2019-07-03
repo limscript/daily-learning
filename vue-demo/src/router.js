@@ -13,7 +13,7 @@ export default new Router({
       component: VantDemo
     },
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: Home
     },

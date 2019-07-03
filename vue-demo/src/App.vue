@@ -25,6 +25,7 @@
       <van-tabbar-item
         icon="setting-o"
         info="20"
+        @click="goDemo"
       >
         标签
       </van-tabbar-item>
@@ -38,6 +39,11 @@ export default {
   data() {
     return {
       active: 0
+    }
+  },
+  methods: {
+    goDemo() {
+      this.$router.push('/about')
     }
   }
 }
