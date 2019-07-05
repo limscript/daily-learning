@@ -1,33 +1,39 @@
 <template>
   <div id="app">
     <van-nav-bar
+      v-if="page"
       title="vant"
       left-text="返回"
       left-arrow
     />
     <router-view />
-    <van-tabbar v-model="active">
+    <van-tabbar
+      v-if="page"
+      v-model="active"
+    >
       <van-tabbar-item icon="home-o">
         标签
       </van-tabbar-item>
       <van-tabbar-item
         icon="search"
         dot
+        @click="pageTo('viewer')"
       >
-        标签
+        viewer
       </van-tabbar-item>
       <van-tabbar-item
         icon="friends-o"
         info="5"
+        @click="pageTo('home')"
       >
-        标签
+        viewer
       </van-tabbar-item>
       <van-tabbar-item
         icon="setting-o"
         info="20"
-        @click="goDemo"
+        @click="pageTo('about')"
       >
-        标签
+        关于
       </van-tabbar-item>
     </van-tabbar>
   </div>
@@ -38,12 +44,16 @@ export default {
   name: 'App',
   data() {
     return {
-      active: 0
+      active: 0,
+      page: true
     }
   },
   methods: {
-    goDemo() {
-      this.$router.push('/about')
+    pageTo(router) {
+      this.$router.push(`/${router}`)
+      if (router !== 'about') {
+        this.page = false
+      }
     }
   }
 }
