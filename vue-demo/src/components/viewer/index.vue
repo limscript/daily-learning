@@ -16,6 +16,7 @@
             v-for="(img,index) in scope.images"
             :src="img.url"
             :key="index"
+            :data-original="img"
           >
         </div>
       </template>
@@ -33,6 +34,9 @@ titleHtml.classList.add('view-title')
 // 备注
 const remarkHtml = document.createElement('div')
 remarkHtml.classList.add('viewer-remark')
+// 视频按钮
+const videoButton = document.createElement('div')
+videoButton.classList.add('viewer-video-button')
 
 export default {
   name: 'ImagesViewer',
@@ -40,6 +44,11 @@ export default {
     Viewer
   },
   props: {
+    // 是否开启标题
+    titleable: {
+      type: Boolean,
+      default: true
+    },
     // 是否显示底部导航栏
     navbar: {
       type: Boolean,
@@ -50,12 +59,12 @@ export default {
       type: Object,
       default: () => {
         return {
-          zoomIn: true,
-          zoomOut: true,
-          prev: true,
-          next: true,
-          rotateLeft: true,
-          rotateRight: true
+          zoomIn: true, // 放大
+          zoomOut: true, // 缩小
+          prev: true, // 上一张
+          next: true, // 下一张
+          rotateLeft: true, // 左旋转
+          rotateRight: true // 右旋转
         }
       }
     },
@@ -115,6 +124,8 @@ export default {
     return {
       titleHtml: titleHtml,
       remarkHtml: remarkHtml,
+      videoButton: videoButton,
+      index: 0,
       options: {
         inline: false,
         title: false,
@@ -131,90 +142,142 @@ export default {
         keyboard: this.keyboard,
         url: 'data-source',
         view: item => {
-          const index = item.detail.index
-          this.titleHtml.innerHTML = this.images[index].id
-          if (this.remarkable && !this.navbar) {
-            this.remarkHtml.innerHTML = `<p>备注:</p><p>${this.images[index].remark}</p>`
-          }
+          this.viewChanged(item)
         }
       }
     }
   },
   methods: {
+    // 初始化
     inited(viewer) {
       this.$viewer = viewer
     },
+    // 打开图片预览
     show() {
       this.$viewer.show()
       this.$nextTick(() => {
         const viewerEl = this.$refs.viewer.$viewer.viewer
         const footerEl = this.$refs.viewer.$viewer.footer
-
-        viewerEl.appendChild(this.titleHtml)
+        if (this.titleable) {
+          viewerEl.appendChild(this.titleHtml)
+        }
         if (this.remarkable && !this.navbar) {
           footerEl.appendChild(this.remarkHtml)
         }
       })
+    },
+    // 监听view事件
+    viewChanged(item) {
+      console.log(item)
+      this.index = item.detail.index
+      const viewerEl = this.$refs.viewer.$viewer.viewer
+      // 视频
+      if (this.images[this.index].videoUrl) {
+        // 视频按钮
+        viewerEl.appendChild(this.videoButton)
+        this.videoButton.innerHTML = '<i class="van-icon van-icon-play-circle"></i>'
+        this.videoButton.addEventListener('click', this.goVideoPage)
+      } else {
+        if (viewerEl.contains(this.videoButton)) {
+          this.videoButton.removeEventListener('click', this.goVideoPage)
+          viewerEl.removeChild(this.videoButton)
+        }
+      }
+      // 标题
+      if (this.titleable) {
+        this.titleHtml.innerHTML = this.images[this.index].title
+      }
+      // 备注
+      if (this.remarkable && !this.navbar) {
+        this.remarkHtml.innerHTML = `<p>备注:</p><p>${this.images[this.index].remark}</p>`
+      }
+    },
+    // 视频跳转
+    goVideoPage() {
+      const index = this.index
+      console.log(this.images[index].videoUrl)
+      let data = this.$router.resolve({
+        name: 'Video',
+        params: { url: this.images[index].videoUrl }
+      })
+      window.open(data.href, '_blank')
     }
   }
 }
 </script>
 <style lang="scss">
-.view-title {
-  position: absolute;
-  height: 48px;
-  line-height: 48px;
-  padding: 0 96px;
-  font-size: 16px;
-  color: #ffffff;
-  font-weight: 500;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-.viewer-button {
-  width: 48px;
-  height: 48px;
-  right: 0;
-  top: 0;
-  border-radius: 0;
-  background-color: transparent;
-  z-index: 10;
-  &:hover {
-    background-color: transparent;
-  }
-}
-.viewer-toolbar > ul {
-  margin: 0 auto 20px;
-  > li {
-    &:nth-child(3),
-    &:nth-child(5) {
-      margin: 0 0 0 20px;
-    }
-  }
-}
-.viewer-remark {
-  height: 100px;
-  box-sizing: border-box;
-  padding: 10px 0 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  > p {
-    width: 720px;
-    margin: 0 auto;
-    line-height: 20px;
-    text-align: left;
-    font-size: 14px;
+.viewer-container {
+  .view-title {
+    position: absolute;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 96px;
+    font-size: 16px;
     color: #ffffff;
+    font-weight: 500;
+    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+    white-space: nowrap;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .viewer-button {
+    width: 48px;
+    height: 48px;
+    right: 0;
+    top: 0;
+    border-radius: 0;
+    background-color: transparent;
+    z-index: 10;
+    &:hover {
+      background-color: transparent;
+    }
+  }
+  .viewer-toolbar > ul {
+    margin: 0 auto 20px;
+    > li {
+      &:nth-child(3),
+      &:nth-child(5) {
+        margin: 0 0 0 20px;
+      }
+    }
+  }
+  .viewer-remark {
+    height: 100px;
+    box-sizing: border-box;
+    padding: 10px 0 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    > p {
+      width: 720px;
+      margin: 0 auto;
+      line-height: 20px;
+      text-align: left;
+      font-size: 14px;
+      color: #ffffff;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+  }
+  .viewer-canvas {
+    padding-top: 20px;
+  }
+  .viewer-video-button {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: calc((100% - 100px) / 2);
+    right: calc((100% - 100px) / 2);
+    top: calc((100% - 100px) / 2);
+    bottom: calc((100% - 100px) / 2);
+    line-height: 100px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
   }
 }
 </style>

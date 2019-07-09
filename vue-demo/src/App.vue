@@ -11,7 +11,10 @@
       v-if="page"
       v-model="active"
     >
-      <van-tabbar-item icon="home-o">
+      <van-tabbar-item
+        icon="home-o"
+        @click="pageTo('video')"
+      >
         标签
       </van-tabbar-item>
       <van-tabbar-item

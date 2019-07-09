@@ -1,9 +1,8 @@
 <template>
   <div class="home">
     <images-viewer
+      :titleable="false"
       :images="images"
-      :navbar="false"
-      :remarkable="true"
       ref="imagesViewer"
     />
     <button
@@ -15,6 +14,10 @@
 
 <script>
 import ImagesViewer from '@/components/viewer'
+const demoData = {
+  啊实打实:
+    '[{"id":"e7b19d72-42e5-b47f-eb82-00c7a395ebcb","user_id":"39e9fe5c-70cb-1376-6b16-65fa88d255f9","url":"https://img-test.myysq.com.cn/mobilecheckquality/upload/9ddbee37-7676-42d6-c86e-85ff04b7eb86.jpg"},{"id":"ca1bce04-400c-11cf-b901-22f20d4b31b0","size":267670,"duration":2000,"user_id":"39e9fe5c-70cb-1376-6b16-65fa88d255f9","url":"https://img-test.myysq.com.cn/mobilecheckquality/upload/57ca6acf-eeb3-4ea3-81aa-b9bbd11ebdfd.jpg","videoUrl":"https://img-test.myysq.com.cn/mobilecheckquality/upload/90ec9ac3-4184-fc68-2020-0cc1f7164084.mp4"},{"id":"c72b014d-8a09-1adc-973c-cb035a645379","user_id":"39e9fe5c-70cb-1376-6b16-65fa88d255f9","url":"https://img-test.myysq.com.cn/mobilecheckquality/upload/4e60a190-17f7-a280-efdf-0c502ae7913c.jpg"},{"id":"88fd3fec-1c83-047d-54c8-12f729a6fe5a","user_id":"39e9fe5c-70cb-1376-6b16-65fa88d255f9","url":"https://img-test.myysq.com.cn/mobilecheckquality/upload/aa55e7ed-55ec-1894-3586-b8af31f890b2.jpg"},{"id":"d7386540-c508-1a41-fb36-d1ec6b32fe33","user_id":"39e9fe5c-70cb-1376-6b16-65fa88d255f9","url":"https://img-test.myysq.com.cn/mobilecheckquality/upload/d2cecb2f-7159-de34-c62f-4a549598223d.jpg"}]'
+}
 
 export default {
   name: 'Home',
@@ -23,31 +26,20 @@ export default {
   },
   data() {
     return {
-      images: [
-        {
-          id: 1,
-          url: 'https://picsum.photos/346/216/?image=15',
-          remark:
-            '暗示收到公司的个十多个第zcx按时发放十大歌手广东省高十多个十多个十多个十多个申达股份十多个三个十多个十多个十多个十多个收到公司的个十多个十多个' +
-            '十多个十大歌手感受到十多个十多个第三个第三个十多个十多个收到公司的广东省十多个的归属感十多个的归属感十多个十多个第三个颂德歌功法法师'
-        },
-        { id: 2, url: 'https://picsum.photos/346/216/?image=16', remark: '暗示法法师' },
-        {
-          id: 3,
-          url: 'https://picsum.photos/346/216/?image=17',
-          remark: '暗示法性大发沙发沙发斯蒂芬法师'
-        },
-        { id: 4, url: 'https://picsum.photos/346/216/?image=18', remark: '暗示法法十多个施工是师' },
-        { id: 5, url: 'https://picsum.photos/346/216/?image=19', remark: '暗示法法师' },
-        {
-          id: 6,
-          url: 'https://picsum.photos/346/216/?image=20',
-          remark: '暗示法法收到公司的公司的第三个十多个十多个十多个十多个师'
-        },
-        { id: 7, url: 'https://picsum.photos/346/216/?image=21', remark: '暗示法法师' },
-        { id: 8, url: 'https://picsum.photos/346/216/?image=12', remark: '暗示法法师' }
-      ]
+      images: []
     }
+  },
+  created() {
+    let images = []
+    Object.keys(demoData).forEach(item => {
+      let arr = JSON.parse(demoData[item])
+      arr.forEach(item2 => {
+        item2.title = item
+      })
+      images = [...images, ...arr]
+    })
+    console.log(images)
+    this.images = images
   },
   methods: {
     // 打开
